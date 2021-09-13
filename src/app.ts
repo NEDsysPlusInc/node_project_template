@@ -5,6 +5,7 @@ import express, { Application, Request, Response } from "express";
 import { startingServer } from "./services/server_setup";
 import { CMiscellaneous } from "./controllers/miscellaneous_controller";
 
+import { routeAppUser } from "./routes/appuser";
 /****************************************************************************/
 /* Initializing Global Variables    for the server                          */
 /****************************************************************************/
@@ -15,24 +16,22 @@ const applicationName = "Server LNT";
 const path = require("path");
 const cmiscellaneous = new CMiscellaneous();
 
-
 /***************************************************************************
  * Route calling controller                                                 *
  ***************************************************************************/
 
-(function main () {
+(function main() {
   app = new startingServer(webPort).serverStarted();
-}());
+})();
 
 app.get("/", (req: Request, res: Response) => {
-    const responseToFrontEnd =  ` App route its Working ==> ${new Date()
-        .toISOString()
-        .replace(/T/, " ")
-        .replace(/\..+/, "")}`;
-    
-    cmiscellaneous.serverResponse(responseToFrontEnd, res, "NoLog");
+  const responseToFrontEnd = ` App route its Working ==> ${new Date()
+    .toISOString()
+    .replace(/T/, " ")
+    .replace(/\..+/, "")}`;
+
+  cmiscellaneous.serverResponse(responseToFrontEnd, res, "NoLog");
 });
 
-
-
-
+// routes?
+app.use("/appuser", routeAppUser);
