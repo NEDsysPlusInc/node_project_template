@@ -1,36 +1,57 @@
 const sqlDb = require("mssql");
 
 import { DBServerConnect } from "../services/dbconnection";
-import { IAppUser, IAppUserCredential } from "../services/interfaces";
+import {
+  IAppUserInfo,
+  IAppUser,
+  ICredential,
+  IPhoneNumber,
+  IEmail,
+  IAddress,
+} from "../services/interfaces";
 import { CEncrypt } from "../services/miscellaneous";
 
 const conn = new DBServerConnect("spCheckAppLicense").DBServerConnection();
 export class CPostAppUser {
   constructor() {} // end of constructor
 
-  postAppUser(appUser: IAppUser) {
+  postAppUser(appUser: any) {
     return new Promise(function (resolve, rejects) {
-      // console.log('Data to be send to DB');
-      // console.log(appUser);
       const m = new CEncrypt();
-      m.encription(appUser.passcode)
+      m.encription(appUser.credential.password)
         .then(function (result) {
           conn.connect().then(async (conn) => {
             var request = new sqlDb.Request(conn)
-              .input("firstName", sqlDb.VarChar(25), appUser.firstName)
-              .input("lastName", sqlDb.VarChar(25), appUser.lastName)
-              .input("entityTypeId", sqlDb.Int, appUser.entityTypeId)
-              .input("phone", sqlDb.VarChar(20), appUser.phone)
-              .input("email", sqlDb.VarChar(30), appUser.email)
-              .input("username", sqlDb.VarChar(20), appUser.username)
+              .input(
+                "firstName",
+                sqlDb.VarChar(25),
+                appUser.personalInfo.firstName
+              )
+              .input(
+                "lastName",
+                sqlDb.VarChar(25),
+                appUser.personalInfo.lastName
+              )
+              .input(
+                "entityTypeId",
+                sqlDb.Int,
+                appUser.personalInfo.entityTypeId
+              )
+              .input("phone", sqlDb.VarChar(20), appUser.phone.phone)
+              .input("email", sqlDb.VarChar(30), appUser.email.email)
+              .input("username", sqlDb.VarChar(20), appUser.credential.username)
               .input("passcode", sqlDb.VarChar(100), result)
-              .input("street", sqlDb.VarChar(100), appUser.street)
-              .input("city", sqlDb.VarChar(50), appUser.city)
-              .input("stateId", sqlDb.Int, appUser.stateId)
-              .input("countryId", sqlDb.Int, appUser.countryId)
-              .input("zipcode", sqlDb.VarChar(20), appUser.zipcode)
-              .input("masterId", sqlDb.Int, appUser.masterId)
-              .input("createdUserId", sqlDb.Int, appUser.createdUserId)
+              .input("street", sqlDb.VarChar(100), appUser.address.street)
+              .input("city", sqlDb.VarChar(50), appUser.address.city)
+              .input("stateId", sqlDb.Int, appUser.address.stateId)
+              .input("countryId", sqlDb.Int, appUser.address.countryId)
+              .input("zipcode", sqlDb.VarChar(20), appUser.address.zipcode)
+              .input("masterId", sqlDb.Int, appUser.personalInfo.masterId)
+              .input(
+                "createdUserId",
+                sqlDb.Int,
+                appUser.personalInfo.createdUserId
+              )
               .input("DMLFlag", sqlDb.VarChar(1), "I")
               .execute("usp_CRUDAppUser")
               .then((result) => {
