@@ -1,0 +1,42 @@
+
+// user JSON
+{
+  "personalInfo": {
+    "firstName": "string",
+    "midName": "string",
+    "lastName": "string",
+    "entityTypeId": "number",
+    "masterId": "number",
+    "createdUserId": "number",
+    "createddDate": "Date",
+    "modifiedUserId": "number",
+    "modifiedDate": "Date",
+    "appUserId": "number"
+  },
+  "credential": {
+    "username1": "stri",
+    "password": "string",
+    "newPassword": "string"
+  },
+  "IPhoneNumber": {
+    "phone": "string",
+    "entityTypeId": "number",
+    "statusID": "number"
+  },
+  "IEmail": {
+    "email": "string",
+    "entityTypeId": "number",
+    "statusID": "number"
+  },
+  "IAddress": {
+    "street": "string",
+    "apartment": "string",
+    "city": "string",
+    "stateId": "string",
+    "countryId": "string",
+    "zipcode": "string",
+    "entityTypeId": "number",
+    "statusID": "number"
+  }
+}
+/////////////////////-----------------------------------------------------------------
